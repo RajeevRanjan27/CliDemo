@@ -4,12 +4,16 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
+var Verbose bool
+var Debug bool
+
 var rootCmd = &cobra.Command{
-	Use:   "directorylist",
-	Short: "List the size of a local directory.",
-	Long:  `This command will display the size of a directory with several different options.`,
+	Use:   "getsize",
+	Short: "List the size of a local directory",
+	Long:  `This cmd will display the size of a directory with several different options`,
 }
 
 func Execute() {
@@ -20,5 +24,9 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Display more verbose output in console output.  (default: false)")
+	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
+
+	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Display debuggin output in the console (default:false)")
+	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
 }
