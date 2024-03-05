@@ -9,11 +9,12 @@ import (
 
 var Verbose bool
 var Debug bool
+var Highlight int
 
 var rootCmd = &cobra.Command{
 	Use:   "getsize",
-	Short: "List the size of a local directory",
-	Long:  `This cmd will display the size of a directory with several different options`,
+	Short: "List the size of a local directory.",
+	Long:  `This command will display the size of a directory with several different options.`,
 }
 
 func Execute() {
@@ -24,9 +25,16 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Display more verbose output in console output.  (default: false)")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Display more verbose output in console output. (default: false)")
 	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 
-	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Display debuggin output in the console (default:false)")
+	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Display debugging output in the console. (default: false)")
 	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
+
+	rootCmd.PersistentFlags().IntVarP(&Highlight, "highlight", "", 500, "Highlight files/directories over this threshold, in MB")
+	viper.BindPFlag("highlight", rootCmd.PersistentFlags().Lookup("highlight"))
+
+	rootCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "Define the path to scan. (required)")
+	rootCmd.MarkPersistentFlagRequired("path")
+	viper.BindPFlag("path", rootCmd.PersistentFlags().Lookup("path"))
 }
